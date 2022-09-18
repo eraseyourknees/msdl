@@ -2,6 +2,16 @@
     width: 100%;
 }
 
+#quick-search {
+    text-align: center;
+}
+#quick-search button {
+    padding: 6.5px;
+    font-size: 9pt;
+    margin-right: 0;
+    margin-left: 0;
+}
+
 #products-list,
 #msdl-ms-content,
 #msdl-please-wait,

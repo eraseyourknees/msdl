@@ -33,6 +33,12 @@
         <div id="products-list">
             <h2>Select product</h2>
             <input id="search-products" type="search" placeholder="Search with regex..." onInput="updateResults();">
+            <div id="quick-search">
+                📌
+                <button onClick="setSearch('Windows 8\\.1');">Windows 8.1</button>
+                <button onClick="setSearch('Windows 10');">Windows 10</button>
+                <button onClick="setSearch('Windows 11');">Windows 11</button>
+            </div>
             <table style="table-layout: auto;">
                 <thead>
                     <tr>

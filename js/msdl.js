@@ -184,6 +184,12 @@ function updateResults() {
     createTable(availableProducts, search.value);
 }
 
+function setSearch(query) {
+    var search = document.getElementById('search-products');
+    search.value = query;
+    updateResults();
+}
+
 function checkHash() {
     var hash = window.location.hash;
     if(hash.length == 0)
