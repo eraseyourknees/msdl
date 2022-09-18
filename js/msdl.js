@@ -11,6 +11,8 @@ const backToProductsDiv = document.getElementById('back-to-products');
 
 var msdlXhr = new XMLHttpRequest();
 
+var availableProducts = {};
+
 function uuidv4() {
     return ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c =>
         (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
@@ -148,22 +150,38 @@ function prepareDownload(id) {
     return getLanguages(id);
 }
 
-function createTable(data) {
+function addTableElement(table, value, data) {
+    var a = document.createElement('a')
+    a.href = "#" + value;
+    a.setAttribute("onClick", "prepareDownload(" + value + ");");
+    a.appendChild(document.createTextNode(data[value]))
+
+    var tr = table.insertRow();
+
+    var td = tr.insertCell();
+    td.appendChild(a);
+
+    var td2 = tr.insertCell();
+    td2.appendChild(document.createTextNode(value))
+}
+
+function createTable(data, search) {
     var table = document.getElementById('products-table-body');
+    var regex = new RegExp('' + search + '', 'ig');
+
+    table.innerHTML = "";
+
     for(value in data) {
-        var a = document.createElement('a')
-        a.href = "#" + value;
-        a.setAttribute("onClick", "prepareDownload(" + value + ");");
-        a.appendChild(document.createTextNode(data[value]))
-
-        var tr = table.insertRow();
-
-        var td = tr.insertCell();
-        td.appendChild(a);
-
-        var td2 = tr.insertCell();
-        td2.appendChild(document.createTextNode(value))
+        if(data[value].match(regex) == null)
+            continue;
+    
+        addTableElement(table, value, data);
     }
+}
+
+function updateResults() {
+    var search = document.getElementById('search-products');
+    createTable(availableProducts, search.value);
 }
 
 function checkHash() {
@@ -175,13 +193,19 @@ function checkHash() {
 }
 
 function preparePage(resp) {
-    var data = JSON.parse(resp);
+    var products = JSON.parse(resp);
+    if(!products['products']) {
+        pleaseWait.style.display = 'none';
+        processingError.style.display = 'block';
+        return;
+    }
 
-    createTable(data['products']);
+    availableProducts = products['products'];
 
     pleaseWait.style.display = 'none';
     productsList.style.display = 'block';
 
+    updateResults();
     checkHash();
 }
 

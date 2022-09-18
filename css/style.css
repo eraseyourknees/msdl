@@ -1,0 +1,11 @@
+#search-products {
+    width: calc(100% - 20px);
+}
+
+#products-list,
+#msdl-ms-content,
+#msdl-please-wait,
+#msdl-processing-error,
+#back-to-products {
+    display: none;
+}
